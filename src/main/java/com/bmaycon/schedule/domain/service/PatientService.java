@@ -16,7 +16,21 @@ public class PatientService {
 
     private final PatientRepository repository;
 
-    public PatientModel save(PatientModel patient) {
+    public PatientModel save(PatientModel patient) throws Exception {
+
+        boolean existsCpf = false;
+        Optional<PatientModel> optCpf = repository.findByCpf(patient.getCpf());
+
+        if (optCpf.isPresent()) {
+            if (!optCpf.get().getId().equals(patient.getId())){
+                existsCpf = true;
+            }
+        }
+
+        if (existsCpf){
+            throw new Exception("CPF already registered");
+        }
+
         return repository.save(patient);
     }
 

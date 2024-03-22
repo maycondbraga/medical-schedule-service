@@ -17,7 +17,7 @@ public class PatientController {
     private final PatientService service;
 
     @PostMapping
-    public ResponseEntity<PatientModel> save(@RequestBody PatientModel patient) {
+    public ResponseEntity<PatientModel> save(@RequestBody PatientModel patient) throws Exception {
         PatientModel patientSaved = service.save(patient);
         return ResponseEntity.status(HttpStatus.CREATED).body(patientSaved);
     }
