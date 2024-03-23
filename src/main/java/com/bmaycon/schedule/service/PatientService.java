@@ -1,8 +1,9 @@
-package com.bmaycon.schedule.domain.service;
+package com.bmaycon.schedule.service;
 
 import com.bmaycon.schedule.domain.entity.PatientModel;
 import com.bmaycon.schedule.domain.repository.PatientRepository;
 import com.bmaycon.schedule.exception.BusinessException;
+import com.bmaycon.schedule.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +22,14 @@ public class PatientService {
         return repository.findAll();
     }
 
-    public Optional<PatientModel> findById(Long id) {
-        return repository.findById(id);
+    public PatientModel findById(Long id) {
+        Optional<PatientModel> optPatient = repository.findById(id);
+
+        if (optPatient.isEmpty()) {
+            throw new NotFoundException("Patient does not exist");
+        }
+
+        return optPatient.get();
     }
 
     public void delete(Long id) {
