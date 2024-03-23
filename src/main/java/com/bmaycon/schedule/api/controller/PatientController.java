@@ -1,6 +1,9 @@
 package com.bmaycon.schedule.api.controller;
 
+import com.bmaycon.schedule.domain.dto.request.PatientRequest;
+import com.bmaycon.schedule.domain.dto.response.PatientResponse;
 import com.bmaycon.schedule.domain.entity.PatientModel;
+import com.bmaycon.schedule.domain.mapper.PatientMapper;
 import com.bmaycon.schedule.domain.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,32 +21,42 @@ public class PatientController {
     private final PatientService service;
 
     @PostMapping
-    public ResponseEntity<PatientModel> save(@RequestBody PatientModel patient) {
+    public ResponseEntity<PatientResponse> save(@RequestBody PatientRequest request) {
+
+        PatientModel patient = PatientMapper.toPatientModel(request);
         PatientModel patientSaved = service.save(patient);
-        return ResponseEntity.status(HttpStatus.CREATED).body(patientSaved);
+        PatientResponse response = PatientMapper.toPatientResponse(patientSaved);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientModel>> findAll() {
+    public ResponseEntity<List<PatientResponse>> findAll() {
         List<PatientModel> patients = service.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(patients);
+        List<PatientResponse> response = PatientMapper.toPatientResponseList(patients);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PatientModel> findById(@PathVariable Long id) {
+    public ResponseEntity<PatientResponse> findById(@PathVariable Long id) {
         Optional<PatientModel> optPatient = service.findById(id);
 
         if (optPatient.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(optPatient.get());
+        PatientResponse response = PatientMapper.toPatientResponse(optPatient.get());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping
-    public ResponseEntity<PatientModel> update(@RequestBody PatientModel patient) {
+    public ResponseEntity<PatientResponse> update(@RequestBody PatientRequest request) {
+
+        PatientModel patient = PatientMapper.toPatientModel(request);
         PatientModel updatedPatient = service.update(patient);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
+        PatientResponse response = PatientMapper.toPatientResponse(updatedPatient);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
