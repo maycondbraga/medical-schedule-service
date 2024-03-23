@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,7 +19,7 @@ public class PatientController {
     private final PatientFacade facade;
 
     @PostMapping
-    public ResponseEntity<PatientResponse> save(@RequestBody PatientRequest request) {
+    public ResponseEntity<PatientResponse> save(@Valid @RequestBody PatientRequest request) {
         PatientResponse response = facade.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -36,7 +37,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @RequestBody PatientRequest request) {
+    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @Valid @RequestBody PatientRequest request) {
         PatientResponse response = facade.update(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
