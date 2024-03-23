@@ -19,13 +19,14 @@ import java.util.Optional;
 public class PatientController {
 
     private final PatientService service;
+    private final PatientMapper mapper;
 
     @PostMapping
     public ResponseEntity<PatientResponse> save(@RequestBody PatientRequest request) {
 
-        PatientModel patient = PatientMapper.toPatientModel(request);
+        PatientModel patient = mapper.toPatientModel(request);
         PatientModel patientSaved = service.save(patient);
-        PatientResponse response = PatientMapper.toPatientResponse(patientSaved);
+        PatientResponse response = mapper.toPatientResponse(patientSaved);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -33,7 +34,7 @@ public class PatientController {
     @GetMapping
     public ResponseEntity<List<PatientResponse>> findAll() {
         List<PatientModel> patients = service.findAll();
-        List<PatientResponse> response = PatientMapper.toPatientResponseList(patients);
+        List<PatientResponse> response = mapper.toPatientResponseList(patients);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -45,16 +46,18 @@ public class PatientController {
             return ResponseEntity.notFound().build();
         }
 
-        PatientResponse response = PatientMapper.toPatientResponse(optPatient.get());
+        PatientResponse response = mapper.toPatientResponse(optPatient.get());
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping
-    public ResponseEntity<PatientResponse> update(@RequestBody PatientRequest request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<PatientResponse> update(@PathVariable Long id, @RequestBody PatientRequest request) {
 
-        PatientModel patient = PatientMapper.toPatientModel(request);
+        PatientModel patient = mapper.toPatientModel(request);
+        patient.setId(id);
+
         PatientModel updatedPatient = service.update(patient);
-        PatientResponse response = PatientMapper.toPatientResponse(updatedPatient);
+        PatientResponse response = mapper.toPatientResponse(updatedPatient);
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -48,6 +48,10 @@ public class PatientService {
 
     public PatientModel update(PatientModel patient) {
 
+        if (!repository.existsById(patient.getId())) {
+            throw new BusinessException("Patient does not exist");
+        }
+
         Optional<PatientModel> optCpf = repository.findByCpf(patient.getCpf());
         Optional<PatientModel> optEmail = repository.findByEmail(patient.getEmail());
 
