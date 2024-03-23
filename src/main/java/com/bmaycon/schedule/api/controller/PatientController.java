@@ -18,7 +18,7 @@ public class PatientController {
     private final PatientService service;
 
     @PostMapping
-    public ResponseEntity<PatientModel> save(@RequestBody PatientModel patient) throws Exception {
+    public ResponseEntity<PatientModel> save(@RequestBody PatientModel patient) {
         PatientModel patientSaved = service.save(patient);
         return ResponseEntity.status(HttpStatus.CREATED).body(patientSaved);
     }
@@ -41,13 +41,13 @@ public class PatientController {
     }
 
     @PutMapping
-    public ResponseEntity<PatientModel> update(@RequestBody PatientModel patient) throws Exception {
+    public ResponseEntity<PatientModel> update(@RequestBody PatientModel patient) {
         PatientModel updatedPatient = service.update(patient);
         return ResponseEntity.status(HttpStatus.OK).body(updatedPatient);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
