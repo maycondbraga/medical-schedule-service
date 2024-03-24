@@ -53,11 +53,18 @@ public class ScheduleFacade {
     }
 
     public ScheduleResponse update(Long id, ScheduleRequest request) {
+        Optional<PatientModel> optPatient = patientService.findById(request.getPatientId());
+
+        if (optPatient.isEmpty()) {
+            throw new NotFoundException("Patient does not exist");
+        }
+
         ScheduleModel schedule = scheduleMapper.toScheduleModel(request);
+        schedule.setPatient(optPatient.get());
         schedule.setId(id);
 
         ScheduleModel updatedSchedule = scheduleService.update(schedule);
-        return scheduleMapper.toScheduleResponse(scheduleService.update(updatedSchedule));
+        return scheduleMapper.toScheduleResponse(updatedSchedule);
     }
 
     public void delete(Long id) {

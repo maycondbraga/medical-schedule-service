@@ -55,10 +55,11 @@ public class ScheduleService {
 
         Optional<ScheduleModel> optByDateTime = repository.findByDateTime(schedule.getDateTime());
 
-        if (optByDateTime.isPresent() && optByDateTime.get().getId().equals(schedule.getId())) {
+        if (optByDateTime.isPresent() && !optByDateTime.get().getId().equals(schedule.getId())) {
             throw new BusinessException("There is already a schedule for this time");
         }
 
+        schedule.setCreationDate(LocalDateTime.now());
         return repository.save(schedule);
     }
 }
