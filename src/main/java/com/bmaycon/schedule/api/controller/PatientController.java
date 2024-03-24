@@ -16,35 +16,35 @@ import java.util.List;
 @RequestMapping("/patient")
 public class PatientController {
 
-    private final PatientFacade facade;
+    private final PatientFacade patientFacade;
 
     @PostMapping
     public ResponseEntity<PatientResponse> save(@Valid @RequestBody PatientRequest request) {
-        PatientResponse response = facade.save(request);
+        PatientResponse response = patientFacade.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
     public ResponseEntity<List<PatientResponse>> findAll() {
-        List<PatientResponse> patients = facade.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(patients);
+        List<PatientResponse> responses = patientFacade.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientResponse> findById(@PathVariable Long id) {
-        PatientResponse response = facade.findById(id);
+        PatientResponse response = patientFacade.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PatientResponse> update(@PathVariable Long id, @Valid @RequestBody PatientRequest request) {
-        PatientResponse response = facade.update(id, request);
+        PatientResponse response = patientFacade.update(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        facade.delete(id);
+        patientFacade.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

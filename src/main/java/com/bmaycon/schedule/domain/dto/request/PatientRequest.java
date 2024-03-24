@@ -14,16 +14,16 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class PatientRequest {
 
-    @NotBlank(message = "name is required")
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @NotBlank(message = "surname is required")
+    @NotBlank(message = "Surname is required")
     private String surname;
 
     @NotBlank(message = "CPF is required")
     private String cpf;
 
     @Email
-    @NotBlank(message = "email is required")
+    @NotBlank(message = "Email is required")
     private String email;
 }
