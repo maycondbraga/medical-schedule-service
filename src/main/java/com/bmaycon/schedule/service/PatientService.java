@@ -18,7 +18,7 @@ public class PatientService {
     private final PatientRepository repository;
 
     public List<PatientModel> findAll() {
-        return repository.findAll();
+        return repository.findAllByOrderById();
     }
 
     public Optional<PatientModel> findById(Long id) {

@@ -19,7 +19,7 @@ public class ScheduleService {
     private final ScheduleRepository repository;
 
     public List<ScheduleModel> findAll() {
-        return repository.findAll();
+        return repository.findAllByOrderById();
     }
 
     public Optional<ScheduleModel> findById(Long id) {
