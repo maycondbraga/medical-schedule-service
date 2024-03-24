@@ -47,7 +47,7 @@ public class ScheduleService {
         return repository.save(schedule);
     }
 
-    public ScheduleModel update(ScheduleModel schedule){
+    public ScheduleModel update(ScheduleModel schedule) {
 
         if (!repository.existsById(schedule.getId())) {
             throw new BusinessException("Schedule does not exist");
