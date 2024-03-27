@@ -48,16 +48,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll();
         http.authorizeRequests().anyRequest().authenticated();
 
+        // Authentication
+        http.addFilter(new CustomAuthenticationFilterConfig(authenticationManager()));
+
+        // Authorization
     }
 
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManagerBean();
-    }
-
-    @Bean
-    protected BCryptPasswordEncoder bCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder();
     }
 }
