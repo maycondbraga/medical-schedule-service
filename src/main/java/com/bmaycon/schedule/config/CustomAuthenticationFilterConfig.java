@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,8 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class CustomAuthenticationFilterConfig extends UsernamePasswordAuthenticationFilter {
 
-    @Value("${jwt.secret}")
-    private String APPLICATION_SECRET;
+    private final ApplicationConfig appConfig;
     private final AuthenticationManager authenticationManager;
 
     @Override
@@ -46,7 +44,7 @@ public class CustomAuthenticationFilterConfig extends UsernamePasswordAuthentica
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException {
 
-        Algorithm algorithm = Algorithm.HMAC256(APPLICATION_SECRET);
+        Algorithm algorithm = Algorithm.HMAC256(appConfig.getSecretKey());
         User user = (User) auth.getPrincipal();
 
         String access_token = JWT.create()

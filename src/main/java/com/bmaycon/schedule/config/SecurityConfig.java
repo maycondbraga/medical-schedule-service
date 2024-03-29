@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ApplicationConfig appConfig;
 
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2
@@ -49,14 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         // Authentication
-        http.addFilter(new CustomAuthenticationFilterConfig(authenticationManager()));
+        http.addFilter(new CustomAuthenticationFilterConfig(appConfig, authenticationManagerBean()));
 
         // Authorization
     }
 
     @Bean
     @Override
-    protected AuthenticationManager authenticationManager() throws Exception {
+    public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 }
